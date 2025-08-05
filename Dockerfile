@@ -1,21 +1,22 @@
-FROM ubuntu:latest AS build
-
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-RUN apt-get install maven -y
-
+# Etapa 1: Build da aplicação
+FROM maven:3.8.5-openjdk-17 AS builder
 WORKDIR /app
 COPY . .
+RUN mvn clean package -DskipTests
 
-RUN mvn clean install
+# Etapa 2: Imagem final com JAR
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
 
-FROM openjdk:17-jdk-slim
+# Copia o JAR gerado na etapa anterior
+COPY --from=builder /app/target/*.jar app.jar
 
+
+# Define a porta que o Render usará
+ENV PORT=8080
 EXPOSE 8080
 
-COPY --from=build /app/target/padaria-0.0.1-SNAPSHOT.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
+# Comando para iniciar o app
+CMD ["java", "-jar", "app.jar"]
 
 

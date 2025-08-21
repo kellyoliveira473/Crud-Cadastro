@@ -24,7 +24,6 @@ public class Usuario {
     private String telefone;
     @Column(name = "Cpf",unique = true)
     private String cpf;
-  @Email(message = "Formato de e-mail inválido")
     @Column(name = "Email")
     private String email;
 }

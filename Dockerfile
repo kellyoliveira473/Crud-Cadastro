@@ -1,13 +1,26 @@
-# Etapa 1: Build da aplicação
-FROM maven:3.9.2-eclipse-temurin-17 AS builder
+# Etapa 1: Build do JAR
+FROM maven:3.9.2-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
+
+# Copia arquivos do projeto
+COPY pom.xml .
+COPY src ./src
+
+# Build do JAR sem rodar testes
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Imagem final com JAR
-FROM eclipse-temurin:17-jdk
+# Etapa 2: Imagem final
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Copia o JAR gerado na etapa anterior
+COPY --from=build /app/target/*.jar app.jar
+
+# Variável de porta do Render
+ENV PORT 8080
+ENV JAVA_OPTS=""
+
+# Comando para rodar o Spring Boot
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=$PORT -jar app.jar"]
+
 

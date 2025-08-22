@@ -7,31 +7,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/padaria")
 @RestController
+@RequestMapping("/padaria")
 @RequiredArgsConstructor
 public class PadariaController {
+
     private final PadariaService padariaService;
+
     @PostMapping
-    public ResponseEntity<Void>SalvarPorId(@RequestBody Padaria padaria){
+    public ResponseEntity<Void> salvar(@RequestBody Padaria padaria){
         padariaService.SalvarPadariaPorId(padaria);
         return ResponseEntity.ok().build();
+    }
 
-    }
     @GetMapping("/{id}")
-    public ResponseEntity<Void>AtualizarPadaria(@RequestParam Long id){
-        padariaService.BuscarPorId(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Padaria> buscar(@PathVariable Long id){
+        Padaria padaria = padariaService.BuscarPorId(id);
+        return ResponseEntity.ok(padaria);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>DeletarPadaria(@RequestParam Long id){
+    public ResponseEntity<Void> deletar(@PathVariable Long id){
         padariaService.DeletarPadariaPorId(id);
         return ResponseEntity.ok().build();
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void >AtualizarPadaria(@RequestParam Long id,@RequestBody Padaria padaria){
-        padariaService.AtualizarPadariaPorId(id,padaria);
+    public ResponseEntity<Void> atualizar(@PathVariable Long id, @RequestBody Padaria padaria){
+        padariaService.AtualizarPadariaPorId(id, padaria);
         return ResponseEntity.ok().build();
     }
-
 }

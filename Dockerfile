@@ -17,7 +17,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Variável de porta do Render
-ENV PORT 8080
+ENV PORT 8081
 ENV JAVA_OPTS=""
 
 # Comando para rodar o Spring Boot

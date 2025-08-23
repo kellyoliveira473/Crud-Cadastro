@@ -6,6 +6,7 @@ import com.kelly.Compra_usuario_padaria.infrasctory.entities.Compra;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/compra")
 @RequiredArgsConstructor

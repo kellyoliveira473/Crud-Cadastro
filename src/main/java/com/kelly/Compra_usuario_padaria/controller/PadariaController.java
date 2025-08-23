@@ -4,9 +4,10 @@ import com.kelly.Compra_usuario_padaria.business.PadariaService;
 import com.kelly.Compra_usuario_padaria.infrasctory.entities.Padaria;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/padaria")
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class PadariaController {
     @PostMapping
     public ResponseEntity<Void> salvar(@RequestBody Padaria padaria){
         padariaService.SalvarPadariaPorId(padaria);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
@@ -29,7 +30,7 @@ public class PadariaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         padariaService.DeletarPadariaPorId(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
